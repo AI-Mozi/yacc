@@ -22,5 +22,6 @@ extern unsigned char key[16];
 
 void initialize(chip8 *chip);
 void emulateCycle(chip8 *chip);
+void loadGame(const char* filename);
 
 #endif
