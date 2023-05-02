@@ -1,6 +1,8 @@
 #ifndef CHIP_H
 #define CHIP_H
 
+#include <stdbool.h>
+
 #define MEMORY_SIZE 4096
 #define PIXELS 64 * 32
 #define STACK_LEVELS 16
@@ -19,6 +21,7 @@ extern unsigned char memory[MEMORY_SIZE];
 extern unsigned char gfx[PIXELS];
 extern unsigned short stack[STACK_LEVELS];
 extern unsigned char key[16];
+extern bool drawFlag;
 
 void initialize(chip8 *chip);
 void emulateCycle(chip8 *chip);
