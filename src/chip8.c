@@ -52,7 +52,7 @@ void initialize(chip8 *chip) {
 void emulateCycle(chip8 *chip) {
   chip->opcode =
       memory[chip->programCounter] << 8 | memory[chip->programCounter + 1];
-
+    
   switch (chip->opcode & 0xF000) {
     case 0x0000:
         switch (chip->opcode & 0x00F) {
@@ -323,16 +323,42 @@ void emulateCycle(chip8 *chip) {
 }
 
 void loadGame(const char *filename) {
-    FILE * file;
-
+    FILE *file;
     file = fopen(filename, "rb");
+    
     if (!file) {
-        printf("Failed loading a game.");
-        exit(74);
+        printf("File not found.\n");
+        exit(64);
     }
 
-    printf("Game loaded correctly!");
+    fseek(file, 0, SEEK_END);
+    long fileSize = ftell(file);
+    rewind(file);
+    printf("File size: %ld bytes\n", fileSize);
 
+    char *buffer = (char *)malloc(sizeof(char) * fileSize);
+    if (!buffer) {
+        printf("Failed allocation of buffer.\n");
+        exit(64);
+    }
+    
+    size_t r = fread(buffer, 1, fileSize, file);
+    if (r != fileSize) {
+        printf("Failed loading game to buffer.\n");
+        exit(64);
+    }
+
+    if ((0xfff - 0x200) > fileSize) {
+        for (int i = 0; i < fileSize; ++i) {
+            memory[i + 512] = buffer[i];
+        }
+
+        printf("Game loaded successfully!\n");
+    } else {
+        printf("LOAD ERROR\n");
+        exit(64);
+    }
     
     fclose(file);
+    free(buffer);
 }
