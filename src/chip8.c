@@ -11,6 +11,7 @@ unsigned char gfx[PIXELS];
 unsigned short stack[STACK_LEVELS];
 unsigned char key[16];
 bool drawFlag = false;
+bool quit = false;
 
 unsigned char fontset[80] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -31,7 +32,7 @@ unsigned char fontset[80] = {
     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
-void initialize(chip8 *chip) {
+void initChip(chip8 *chip) {
   chip->programCounter = 0x200;
   chip->opcode = 0;
   chip->index = 0;
@@ -316,9 +317,9 @@ void emulateCycle(chip8 *chip) {
 
   if (chip->soundTimer > 0) {
     if (chip->soundTimer == 1) {
-      printf("BEEP!\n");
-      --chip->soundTimer;
+      printf("BEEP!\n"); // TODO: Implement sounds;
     }
+    --chip->soundTimer;
   }
 }
 
