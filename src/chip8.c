@@ -5,6 +5,8 @@
 #include <stdbool.h>
 
 #include "chip8.h"
+#include "graphic.h"
+#include "audio.h"
 
 unsigned char memory[MEMORY_SIZE];
 unsigned char gfx[PIXELS];
@@ -317,7 +319,7 @@ void emulateCycle(chip8 *chip) {
 
   if (chip->soundTimer > 0) {
     if (chip->soundTimer == 1) {
-      printf("BEEP!\n"); // TODO: Implement sounds;
+        playSound();
     }
     --chip->soundTimer;
   }
