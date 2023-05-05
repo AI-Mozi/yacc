@@ -21,11 +21,12 @@ int main(int argc, char**argv) {
 
     for (;;) {
          emulateCycle(&chip);
-         loopGraphic();
 
          if (drawFlag) {
             drawGraphic();
          }
+            
+         loopGraphic();
 
          if (quit) {
             return 1;
