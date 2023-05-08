@@ -14,7 +14,6 @@ unsigned char gfx[PIXELS];
 unsigned short stack[STACK_LEVELS];
 unsigned char key[16];
 bool drawFlag = false;
-bool quit = false;
 
 void (*Chip8Table[17])(chip8 *chip);
 
@@ -42,6 +41,7 @@ void initChip(chip8 *chip) {
   chip->opcode = 0;
   chip->index = 0;
   chip->stackPointer = 0;
+  chip->state = RUNNING;
 
   // clearing memory
   memset(memory, 0, 0xFFF);
@@ -299,10 +299,7 @@ void opF(chip8 *chip) {
     }
 }
 
-void emulateCycle(chip8 *chip) {
-    fetch(chip);
-    Chip8Table[(chip->opcode & 0xF000) >> 12](chip);
-
+void timerHandler(chip8 *chip) {
     if (chip->delayTimer > 0) {
         --chip->delayTimer;
     }
@@ -313,6 +310,13 @@ void emulateCycle(chip8 *chip) {
         }
         --chip->soundTimer;
     }
+}
+
+void emulateInstruction(chip8 *chip) {
+    fetch(chip);
+    Chip8Table[(chip->opcode & 0xF000) >> 12](chip);
+    
+    timerHandler(chip);
 }
 
 void loadGame(const char *filename) {

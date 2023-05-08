@@ -36,16 +36,25 @@ int initGraphics() {
   return 0;
 }
 
-void loopGraphic() {
+void inputHandle(chip8 *chip) {
   if (SDL_PollEvent(&event)) {
     switch (event.type) {
     case SDL_QUIT:
-      quit = true;
+      chip->state = QUIT;
       break;
     case SDL_KEYDOWN:
       switch (event.key.keysym.sym) {
       case SDLK_ESCAPE:
-        // quit = true;
+        chip->state = QUIT;
+        break;
+      case SDLK_SPACE:
+        if (chip->state == RUNNING) {
+            printf("PAUSED\n");
+            chip->state = PAUSED;
+        } else {
+            printf("RESUMED\n");
+            chip->state = RUNNING;
+        }
         break;
       case SDLK_1:
         key[0x1] = 1;

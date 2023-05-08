@@ -9,6 +9,13 @@
 #define STACK_LEVELS 16
 #define WIDTH 640
 #define HEIGTH 320
+#define INSTRUCTIONS_PER_SECOND 700
+
+typedef enum {
+    RUNNING,
+    PAUSED,
+    QUIT
+} chip8_state;
 
 typedef struct {
     unsigned char V[16];
@@ -18,6 +25,7 @@ typedef struct {
     unsigned short stackPointer;
     unsigned char delayTimer;
     unsigned char soundTimer;
+    chip8_state state;
 } chip8;
 
 extern unsigned char memory[MEMORY_SIZE];
@@ -25,10 +33,9 @@ extern unsigned char gfx[PIXELS];
 extern unsigned short stack[STACK_LEVELS];
 extern unsigned char key[16];
 extern bool drawFlag;
-extern bool quit;
 
 void initChip(chip8 *chip);
-void emulateCycle(chip8 *chip);
+void emulateInstruction(chip8 *chip);
 void loadGame(const char* filename);
 void op0(chip8 *chip);
 void op1(chip8 *chip);
