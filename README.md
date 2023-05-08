@@ -6,6 +6,20 @@
 
 <h4 align="center">Implementation of Chip-8 Interpreter written in C</h4>
 
+## Dependencies
+
+- gcc
+- make
+- SDL2
+
+## Building
+
+Run `make` in root directory.
+
+## Usage
+
+`./yacc [path-to-file]`
+
 ## Resources
 
 [How to write an emulator (CHIP-8 interpreter)](https://multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/)
